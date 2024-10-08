@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head.ejs') %>
+        <title>
+            <%= blog.title %>
+        </title>
+</head>
+
+<body>
+
+    <%- include('./partials/nav.ejs') %>
+
+        <div class="container mt-4">
+
+            <h1 class="mb-3">
+                <%= blog.title %>
+            </h1>
+            <img src="/<%= blog.coverImage %>" width="500" height="250">
+            <p class="mt-4">
+                <%= blog.body %>
+            </p>
+        </div>
+
+        <div class="container mt-4">
+            <img class="me-2" src="/<%= blog.createdBy.profileimage %>" height="30px" width="30px">
+            <%= blog.createdBy.fullName %>
+        </div>
+
+        <div class="container mt-4">
+            <h1>Comments (<%= comments.length %>)</h1>
+            <% if (locals.user) { %>
+                <form action="/blog/comment/<%= blog._id %>" method="post">
+                    <div class="mb-2">
+                        <input type="text" class="form-control" name="content" placeholder="Enter your comment ..."
+                            id="comment" aria-describedby="emailHelp">
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-3">Add</button>
+                </form>
+                <% } else { %>
+                    <p class="text-body-secondary">
+                        Please <a href="/user/login" class="text-reset">login</a> to add a comment.
+                    </p>
+
+
+                    <% } %>
+
+                        <div class="container mt-2">
+                            <% comments.forEach(e=> { %>
+                                <div class="d-flex align-items-start mb-3 border p-2 rounded">
+                                    <img class="me-2" src="/<%= e.createdBy.profileimage %>" height="40px" width="40px"
+                                        alt="<%= e.createdBy.fullName %>'s profile picture" style="border-radius: 50%;">
+                                    <div>
+                                        <p class="mb-1"><strong>
+                                                <%= e.createdBy.fullName %>
+                                            </strong></p>
+                                        <p class="mb-0">
+                                            <%= e.content %>
+                                        </p>
+                                    </div>
+                                </div>
+                                <% }) %>
+                        </div>
+
+        </div>
+
+        <%- include('./partials/script.ejs') %>
+</body>
+
+</html>
